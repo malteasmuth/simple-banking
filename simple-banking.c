@@ -6,11 +6,12 @@ struct account{
     double balance;
 };
 
-int save(void){
+int save(struct account a){
   FILE *file;
   file = fopen("AccountData.csv", "w+");
 
   fprintf(file, "Id, Balance\n");
+  fprintf(file, "%d, %.2f", a.id, a.balance);
   fclose(file);
   return 0;
 }
@@ -50,13 +51,14 @@ double withdraw(double balance){
 }
 
 
-int showMenu(double balance){
+struct account showMenu(struct account a){
 
   int running = 1;
   int choice;
 
   do {
-    printf("You're staring at Thrustworthy Banks!\n");
+    printf("You're staring at a Thrustworthy Banks screen!\n");
+    printf("What can this computer do for you?\n");
     printf("(1)   Show balance\n");
     printf("(2)   Deposit\n");
     printf("(3)   Withdraw\n");
@@ -68,25 +70,20 @@ int showMenu(double balance){
 
       case 1:
       printf("Show balance ...\n");
-      showBalance(balance);
+      showBalance(a.balance);
       break;
 
       case 2:
       printf("Depsit money ...\n");
-      balance = deposit(balance);
+      a.balance = deposit(a.balance);
       break;
 
       case 3:
       printf("Withdraw amount ...\n");
-      balance = withdraw(balance);
+      a.balance = withdraw(a.balance);
       break;
 
       case 4:
-      printf("Saving ...\n");
-      save();
-      break;
-
-      case 5:
       printf("Goodbye ...\n");
       running = 0;
       break;
@@ -94,16 +91,15 @@ int showMenu(double balance){
 
   } while (running == 1);
 
-  return 0;
+  return a;
 }
 
 int main(void){
 
   struct account a = { a.id = 1, a.balance = 0.00 };
 
-  double balance = a.balance;
-
-  showMenu(balance);
+  a = showMenu(a);
+  save(a);
 
   return 0;
 }
