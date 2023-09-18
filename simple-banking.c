@@ -1,6 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+struct account{
+    int id;
+    double balance;
+};
+
 int save(void){
   FILE *file;
   file = fopen("AccountData.csv", "w+");
@@ -9,7 +14,6 @@ int save(void){
   fclose(file);
   return 0;
 }
-
 
 int showBalance(double balance){
   printf("Your balance is: %.2f EUR \n", balance);
@@ -95,7 +99,9 @@ int showMenu(double balance){
 
 int main(void){
 
-  double balance = 100.12;
+  struct account a = { a.id = 1, a.balance = 0.00 };
+
+  double balance = a.balance;
 
   showMenu(balance);
 
