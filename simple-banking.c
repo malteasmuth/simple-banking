@@ -6,6 +6,15 @@ struct account{
     double balance;
 };
 
+int save(void){
+  FILE *file;
+  file = fopen("AccountData.csv", "w+");
+
+  fprintf(file, "Id, Balance\n");
+  fclose(file);
+  return 0;
+}
+
 int showBalance(double balance){
   printf("Your balance is: %.2f EUR \n", balance);
   return 0;
@@ -73,6 +82,11 @@ int showMenu(double balance){
       break;
 
       case 4:
+      printf("Saving ...\n");
+      save();
+      break;
+
+      case 5:
       printf("Goodbye ...\n");
       running = 0;
       break;
@@ -90,6 +104,6 @@ int main(void){
   double balance = a.balance;
 
   showMenu(balance);
-  printf("%zu", sizeof(a));
+
   return 0;
 }
