@@ -1,6 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+struct account{
+    int id;
+    double balance;
+};
+
 int showBalance(double balance){
   printf("Your balance is: %.2f EUR \n", balance);
   return 0;
@@ -80,8 +85,11 @@ int showMenu(double balance){
 
 int main(void){
 
-  double balance = 100.12;
+  struct account a = { a.id = 1, a.balance = 0.00 };
+
+  double balance = a.balance;
 
   showMenu(balance);
+  printf("%zu", sizeof(a));
   return 0;
 }
