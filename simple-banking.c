@@ -4,13 +4,19 @@
 #include "models/account.h"
 #include "libraries/customer_actions.h"
 
+struct account accounts[100];
+
 int loadCSV(){
   FILE *file;
   file = fopen("DB/AccountData.csv", "r");
 
+  struct account * accptr = NULL;
+  accptr = accounts;
+
   char buffer[1024];
   int row = 0;
   int column = 0;
+  int i = 0;
 
   while (fgets(buffer, 1024, file)) {
 
@@ -23,19 +29,22 @@ int loadCSV(){
 
       if (column == 0) {
         printf("Id: ");
+        accounts[i].id = atoi(value);
       }
 
       if (column == 1) {
         printf("Balance: ");
+        accounts[i].balance = atof(value);
       }
 
       printf("%s", value);
       value = strtok(NULL, ", ");
       column++;
     }
-
+    i++;
     printf("\n");
   }
+  printf("Id: %d, Balance: %le", accounts[0].id, accounts[0].balance);
   return 0;
 }
 
