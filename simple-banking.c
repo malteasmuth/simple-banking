@@ -4,13 +4,58 @@
 #include "models/account.h"
 #include "libraries/customer_actions.h"
 
-int loadCSV(){
+struct account accounts[100];
+
+
+
+struct account findAccount(int id){
+
+  struct account account;
+  /* iterate over all accounts
+     When the id matches,
+     grab this account and save it
+     as an instance of accounts */
+
+  for(int i = 0; i <= 100; i++){
+
+    if(accounts[i].id == id){
+      account = accounts[i];
+    }
+  }
+
+  return account;
+}
+
+
+
+int newAccount(void){
+
+  FILE *file;
+  file = fopen("DB/AccountData.csv", "a+");
+  int id;
+  double balance = 0;
+
+  printf("Enter account id: ");
+  scanf("%d", &id);
+
+  fprintf(file, "\n%d, %le,", id, balance);
+
+  printf("\nNew Account added to record");
+  fclose(file);
+  return id;
+}
+
+struct account* loadCSV(){
   FILE *file;
   file = fopen("DB/AccountData.csv", "r");
+
+  struct account * accptr = NULL;
+  accptr = accounts;
 
   char buffer[1024];
   int row = 0;
   int column = 0;
+  int i = 0;
 
   while (fgets(buffer, 1024, file)) {
 
@@ -22,19 +67,21 @@ int loadCSV(){
     while(value){
 
       if (column == 0) {
-        printf("Id: ");
+        /*printf("Id: ");*/
+        accounts[i].id = atoi(value);
       }
 
       if (column == 1) {
-        printf("Balance: ");
+        /*printf("Balance: ");*/
+        accounts[i].balance = atof(value);
       }
 
-      printf("%s", value);
+      /*printf("%s", value);*/
       value = strtok(NULL, ", ");
       column++;
     }
-
-    printf("\n");
+    i++;
+    /*printf("\n");*/
   }
   return 0;
 }
@@ -97,11 +144,10 @@ struct account showMenu(struct account a){
 }
 
 int main(void){
+  loadCSV();
+  /*int id = newAccount();*/
 
-  struct account a = { a.id = 1, a.balance = 0.00 };
-
+  struct account a = findAccount(4);
   a = showMenu(a);
-  save(a);
-
   return 0;
 }
