@@ -1,10 +1,48 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 struct account{
     int id;
     double balance;
 };
+
+int loadCSV(){
+  FILE *file;
+  file = fopen("AccountData.csv", "r");
+
+  char buffer[1024];
+  int row = 0;
+  int column = 0;
+
+  printf("Hello!");
+
+  while (fgets(buffer, 1024, file)) {
+
+    column = 0;
+    row = row + 1;
+
+    char* value = strtok(buffer, ", ");
+
+    while(value){
+
+      if (column == 0) {
+        printf("Id: ");
+      }
+
+      if (column == 1) {
+        printf("Balance: ");
+      }
+
+      printf("%s", value);
+      value = strtok(NULL, ", ");
+      column++;
+    }
+
+    printf("\n");
+  }
+  return 0;
+}
 
 int save(struct account a){
   FILE *file;
@@ -86,6 +124,10 @@ struct account showMenu(struct account a){
       case 4:
       printf("Goodbye ...\n");
       running = 0;
+      break;
+
+      case 5:
+      loadCSV();
       break;
     }
 
