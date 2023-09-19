@@ -6,7 +6,7 @@
 
 struct account accounts[100];
 
-int loadCSV(){
+struct account* loadCSV(){
   FILE *file;
   file = fopen("DB/AccountData.csv", "r");
 
@@ -44,7 +44,7 @@ int loadCSV(){
     i++;
     printf("\n");
   }
-  printf("Id: %d, Balance: %le", accounts[0].id, accounts[0].balance);
+  printf("Id: %d, Balance: %.2f\n", accounts[2].id, accounts[2].balance);
   return 0;
 }
 
@@ -106,11 +106,8 @@ struct account showMenu(struct account a){
 }
 
 int main(void){
-
+  loadCSV();
   struct account a = { a.id = 1, a.balance = 0.00 };
-
   a = showMenu(a);
-  save(a);
-
   return 0;
 }
