@@ -1,21 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-struct account{
-    int id;
-    double balance;
-};
+#include "models/account.h"
+#include "libraries/customer_actions.h"
 
 int loadCSV(){
   FILE *file;
-  file = fopen("AccountData.csv", "r");
+  file = fopen("DB/AccountData.csv", "r");
 
   char buffer[1024];
   int row = 0;
   int column = 0;
-
-  printf("Hello!");
 
   while (fgets(buffer, 1024, file)) {
 
@@ -46,48 +41,13 @@ int loadCSV(){
 
 int save(struct account a){
   FILE *file;
-  file = fopen("AccountData.csv", "w+");
+  file = fopen("DB/AccountData.csv", "w+");
 
   fprintf(file, "Id, Balance\n");
   fprintf(file, "%d, %.2f", a.id, a.balance);
   fclose(file);
   return 0;
 }
-
-int showBalance(double balance){
-  printf("Your balance is: %.2f EUR \n", balance);
-  return 0;
-}
-
-double deposit(double balance){
-  double deposit_amount;
-
-  printf("Please enter the amount you want to deposit.\n");
-  printf("Amount: ");
-  scanf("%le", &deposit_amount);
-
-  balance = balance + deposit_amount;
-
-  printf("Your new balance: %.2f EUR\n", balance);
-
-  return balance;
-}
-
-double withdraw(double balance){
-
-  double withdraw_amount;
-
-  printf("How much money do you want to withdraw?\n");
-  printf("Amount: ");
-  scanf("%le", &withdraw_amount);
-
-  balance = balance - withdraw_amount;
-
-  printf("Your new balance: %.2f EUR\n", balance);
-
-  return balance;
-}
-
 
 struct account showMenu(struct account a){
 
@@ -122,7 +82,7 @@ struct account showMenu(struct account a){
       break;
 
       case 4:
-      printf("Goodbye ...\n");
+      printf("Goodbye. Your fortune is save with us ...\n");
       running = 0;
       break;
 
