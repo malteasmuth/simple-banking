@@ -6,27 +6,18 @@
 
 struct account accounts[100];
 
-
-
 struct account findAccount(int id){
 
   struct account account;
-  /* iterate over all accounts
-     When the id matches,
-     grab this account and save it
-     as an instance of accounts */
 
   for(int i = 0; i <= 100; i++){
-
     if(accounts[i].id == id){
       account = accounts[i];
     }
   }
-
+  printf("%d", account.id);
   return account;
 }
-
-
 
 int newAccount(void){
 
@@ -48,9 +39,6 @@ int newAccount(void){
 struct account* loadCSV(){
   FILE *file;
   file = fopen("DB/AccountData.csv", "r");
-
-  struct account * accptr = NULL;
-  accptr = accounts;
 
   char buffer[1024];
   int row = 0;
@@ -147,7 +135,10 @@ int main(void){
   loadCSV();
   /*int id = newAccount();*/
 
-  struct account a = findAccount(4);
+  printf("Please enter your account number: ");
+  int account_number;
+  scanf("%d", &account_number);
+  struct account a = findAccount(account_number);
   a = showMenu(a);
   return 0;
 }
