@@ -4,19 +4,20 @@
 #include "models/account.h"
 #include "libraries/customer_actions.h"
 
-int save(struct accounts* ptr){
-  /*OVERWRITE EXISTING CSV TO SAVE CHANGES MADE TO ACCOUNTS*/
+struct account accounts[120];
 
+int saveCSV(struct account* accounts){
+  /*OVERWRITE EXISTING CSV TO SAVE CHANGES MADE TO ACCOUNTS*/
   /*open the file*/
   FILE *file_write;
-  file_write = fopen("DB/AccountDataUpdate.csv", "w+");
+  file_write = fopen("DB/AccountData.csv", "w+");
 
   /*write the headline into the file*/
   fprintf(file_write, "Id, Balance\n");
 
   /*Iterate over array and write every struct in accounts into the file as a new row*/
-
-  for(int i = 1; i <= 100; i++) {
+  for(int i = 0; i <= 100; i++) {
+    printf("%d, %.2f,\n", accounts[i].id, accounts[i].balance);
     fprintf(file_write, "%d, %.2f,\n", accounts[i].id, accounts[i].balance);
   }
 
@@ -78,20 +79,23 @@ int loadCSV(struct account* accounts){
 //   return id;
 // }
 
-// struct account findAccount(int id, struct account * accounts){
+/*HIER WEITER ARBEITEN -- DER FEHLER LIEGT HIER*/
 
-//   struct account account;
+struct account* findAccount(int id, struct account* accounts){
 
-//   for(int i = 0; i <= 100; i++){
-//     if(accounts[i].id == id){
-//       account = accounts[i];
-//     }
-//   }
-//   printf("%d", account.id);
-//   return account;
-// }
+  struct account account;
+  struct account* active_account = NULL;
 
-// int showMenu(struct account a){
+  for(int i = 0; i <= 100; i++){
+    if(accounts[i].id == id){
+      account = accounts[i];
+      active_account = &account;
+    }
+  }
+  return active_account;
+}
+
+// int showMenu(struct account* a){
 
 //   int running = 1;
 //   int choice;
@@ -104,33 +108,31 @@ int loadCSV(struct account* accounts){
 //     printf("(3)   Withdraw\n");
 //     printf("(4)   Quit\n");
 
+
 //     scanf("%d", &choice);
 
-//     switch(choice) {
+    // switch(choice) {
+    //   case 1:
+    //   printf("Show balance ...\n");
+    //   showBalance(a);
+    //   break;
 
-//       case 1:
-//       printf("Show balance ...\n");
-//       showBalance(a.balance);
-//       break;
+      // case 2:
+      // printf("Depsit money ...\n");
+      // a.balance = deposit(a.balance);
+      // printf("Menu value: %.2f", a.balance);
+      // break;
 
-//       case 2:
-//       printf("Depsit money ...\n");
-//       a.balance = deposit(a.balance);
-//       printf("Menu value: %.2f", a.balance);
-//       save();
-//       break;
+      // case 3:
+      // printf("Withdraw amount ...\n");
+      // a.balance = withdraw(a.balance);
+      // break;
 
-//       case 3:
-//       printf("Withdraw amount ...\n");
-//       a.balance = withdraw(a.balance);
-//       save();
-//       break;
-
-//       case 4:
-//       printf("Goodbye. Your fortune is save with us ...\n");
-//       running = 0;
-//       break;
-//     }
+      // case 4:
+      // printf("Goodbye. Your fortune is save with us ...\n");
+      // running = 0;
+      // break;
+    // }
 
 //   } while (running == 1);
 
@@ -139,19 +141,21 @@ int loadCSV(struct account* accounts){
 
 int main(void){
 
-  struct account accounts[120];
-  struct account* accountsptr = &accounts;
+  struct account* accountsptr = accounts;
 
   loadCSV(accounts);
-  saveCSV(accountsptr);
+
+  printf("Please enter your account number: ");
+  int account_number;
+  scanf("%d", &account_number);
+
+  struct account* active_account = findAccount(account_number, accounts);
+  printf("BALANCE 2: %.2f\n", (*active_account).balance);
+  // showMenu(active_account);
+
+  saveCSV(accounts);
 
   /*int id = newAccount();*/
 
-  // printf("Please enter your account number: ");
-  // int account_number;
-  // scanf("%d", &account_number);
-
-  // // struct account a = findAccount(account_number);
-  // showMenu(a);
   return 0;
 }
